@@ -28,9 +28,9 @@ class Grid {
   private columns: Columns;
 
   constructor(rows: Rows, columns: Columns) {
-    this.rows = rows;
-    this.columns = columns;
     this.grid = Array.from(Array(rows), () => Array(columns).fill(CellState.DEAD));
+    this.rows = this.grid.length;
+    this.columns = this.grid[0].length;
   }
 
   currentGeneration() {
@@ -56,13 +56,30 @@ class Grid {
   }
 
   countNeighbors(row: number, column: number) {
-    if (
-      this.grid[row][column + 1] === CellState.ALIVE &&
-      this.grid[row - 1][column + 1] === CellState.ALIVE
-    ) {
-      return 2;
+    let livingCells = 0;
+    const neighborsToCheck = [
+      [row - 1, column - 1],
+      [row - 1, column],
+      [row - 1, column + 1],
+      [row, column - 1],
+      [row, column + 1],
+      [row + 1, column + 1],
+      [row + 1, column],
+      [row + 1, column - 1]
+    ];
+
+
+    for (let i = 0; i < neighborsToCheck.length; i++) {
+      let rowToCheck = neighborsToCheck[i][0];
+      let columnToCheck = neighborsToCheck[i][1];
+      if (
+        this.grid[rowToCheck][columnToCheck] === CellState.ALIVE &&
+        rowToCheck >= 0 && columnToCheck >= 0 && rowToCheck < this.rows && columnToCheck < this.columns
+      ) {
+        livingCells++;
+      }
     }
-    return 1;
+    return livingCells;
   }
 }
 
@@ -177,7 +194,7 @@ describe("GridShould", () => {
   });
 
   it("count one living neighbors", () => {
-    const grid = new Grid(2, 3);
+    const grid = new Grid(3, 3);
     const mainCell = new Coordinates(1, 1);
     const livingNeighbor = new Coordinates(1, 2);
 
@@ -190,7 +207,7 @@ describe("GridShould", () => {
   });
 
   it("count two living neighbors", () => {
-    const grid = new Grid(2, 3);
+    const grid = new Grid(3, 3);
     const mainCell = new Coordinates(1, 1);
     const livingNeighbor = new Coordinates(1, 2);
     const livingNeighborTwo = new Coordinates(0, 2);
@@ -202,5 +219,41 @@ describe("GridShould", () => {
 
     const actual = grid.countNeighbors(1, 1);
     expect(actual).toEqual(2);
+  });
+
+  it("count three living neighbors", () => {
+    const grid = new Grid(3, 3);
+    const mainCell = new Coordinates(1, 1);
+    const livingNeighbor = new Coordinates(1, 2);
+    const livingNeighborTwo = new Coordinates(0, 2);
+    const livingNeighborThree = new Coordinates(0, 1);
+
+    grid.addLivingCell(mainCell, CellState.ALIVE);
+    grid.addLivingCell(livingNeighbor, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborTwo, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborThree, CellState.ALIVE);
+
+
+    const actual = grid.countNeighbors(1, 1);
+    expect(actual).toEqual(3);
+  });
+
+  it("count four living neighbors", () => {
+    const grid = new Grid(3, 3);
+    const mainCell = new Coordinates(1, 1);
+    const livingNeighbor = new Coordinates(1, 2);
+    const livingNeighborTwo = new Coordinates(0, 2);
+    const livingNeighborThree = new Coordinates(0, 1);
+    const livingNeighborFour = new Coordinates(0, 0);
+
+    grid.addLivingCell(mainCell, CellState.ALIVE);
+    grid.addLivingCell(livingNeighbor, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborTwo, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborThree, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborFour, CellState.ALIVE);
+
+
+    const actual = grid.countNeighbors(1, 1);
+    expect(actual).toEqual(4);
   });
 });
