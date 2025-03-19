@@ -95,4 +95,25 @@ describe("GridShould", () => {
     const actual = grid.currentGeneration();
     expect(actual).toEqual(expected);
   });
+
+  it("add multiple living cells on a 3x3 grid", () => {
+    const expected = [
+      [CellState.DEAD, CellState.DEAD, CellState.ALIVE],
+      [CellState.DEAD, CellState.ALIVE, CellState.ALIVE],
+      [CellState.DEAD, CellState.DEAD, CellState.ALIVE]
+    ];
+    const grid = new Grid(3, 3);
+    const mainCell = new Coordinates(1, 1);
+    const livingNeighborOne = new Coordinates(0, 2);
+    const livingNeighborTwo = new Coordinates(1, 2);
+    const livingNeighborThree = new Coordinates(2, 2);
+
+    grid.addLivingCell(mainCell, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborOne, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborTwo, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborThree, CellState.ALIVE);
+
+    const actual = grid.currentGeneration();
+    expect(actual).toEqual(expected);
+  });
 });
