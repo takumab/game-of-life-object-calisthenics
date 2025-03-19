@@ -23,13 +23,9 @@ class Coordinates {
 }
 
 class Grid {
-  private rows: Rows;
-  private columns: Columns;
   private grid: CellState[][] = [];
 
   constructor(rows: Rows, columns: Columns) {
-    this.rows = rows;
-    this.columns = columns;
     this.grid = Array.from(Array(rows), () => Array(columns).fill(CellState.DEAD));
   }
 
