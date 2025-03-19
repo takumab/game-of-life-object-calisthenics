@@ -30,8 +30,8 @@ class Grid {
 
   constructor(height: number, width: number) {
     this.grid = Array.from(Array(height), () => Array(width).fill(CellState.DEAD));
-    this.height = this.grid.length;
-    this.width = this.grid[0].length;
+    this.height = height;
+    this.width = width;
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         this.gridNew.push(new Cell(new Coordinates(x, y)));
