@@ -43,7 +43,7 @@ class Grid {
 }
 
 describe("GridShould", () => {
-  it("initialize with  with a population of one dead cell", () => {
+  it("initialize with a population of one dead cell", () => {
     const expected = [
       [CellState.DEAD]
     ];
