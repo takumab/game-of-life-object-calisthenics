@@ -16,7 +16,7 @@ class Coordinates {
     this.y = y;
   }
 
-  place(livingCell: CellState, grid: CellState[][]) {
+  plot(livingCell: CellState, grid: CellState[][]) {
     grid[this.x][this.y] = livingCell;
     return grid;
   }
@@ -34,7 +34,7 @@ class Grid {
   }
 
   addLivingCell(coordinates: Coordinates, livingCell: CellState) {
-    this.grid = coordinates.place(livingCell, this.grid);
+    this.grid = coordinates.plot(livingCell, this.grid);
   }
 }
 
