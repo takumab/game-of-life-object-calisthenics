@@ -148,7 +148,7 @@ describe("GridShould", () => {
     expect(actual).toEqual(expected);
   });
 
-  it("cause live cell to die when has only one living neighbors", () => {
+  it("cause live cell to die when has only one living neighbor", () => {
     const expected = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.DEAD, CellState.DEAD]
