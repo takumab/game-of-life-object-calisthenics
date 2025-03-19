@@ -80,4 +80,19 @@ describe("GridShould", () => {
     const actual = grid.currentGeneration();
     expect(actual).toEqual(expected);
   });
+
+  it("add a living cell on a 3x3 grid", () => {
+    const expected = [
+      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
+      [CellState.DEAD, CellState.ALIVE, CellState.DEAD],
+      [CellState.DEAD, CellState.DEAD, CellState.DEAD]
+    ];
+    const grid = new Grid(3, 3);
+    const coordinates = new Coordinates(1, 1);
+
+    grid.addLivingCell(coordinates, CellState.ALIVE);
+
+    const actual = grid.currentGeneration();
+    expect(actual).toEqual(expected);
+  });
 });
