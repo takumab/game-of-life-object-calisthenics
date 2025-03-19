@@ -23,6 +23,7 @@ class Cell {
 }
 
 class Grid {
+  private readonly gridNew: Cell[] = [];
   private grid: CellState[][] = [];
   private height: number;
   private width: number;
@@ -31,6 +32,11 @@ class Grid {
     this.grid = Array.from(Array(height), () => Array(width).fill(CellState.DEAD));
     this.height = this.grid.length;
     this.width = this.grid[0].length;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        this.gridNew.push(new Cell(new Coordinates(x, y)));
+      }
+    }
   }
 
   // no getters
