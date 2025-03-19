@@ -13,6 +13,15 @@ class Coordinates {
   }
 }
 
+class Cell {
+  private readonly coordinates: Coordinates;
+  private state: CellState = CellState.DEAD;
+
+  constructor(coordinates: Coordinates) {
+    this.coordinates = coordinates;
+  }
+}
+
 class Grid {
   private grid: CellState[][] = [];
   private height: number;
