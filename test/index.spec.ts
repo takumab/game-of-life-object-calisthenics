@@ -73,13 +73,21 @@ class Grid {
       let rowToCheck = neighborsToCheck[i][0];
       let columnToCheck = neighborsToCheck[i][1];
       if (
-        this.grid[rowToCheck][columnToCheck] === CellState.ALIVE &&
-        rowToCheck >= 0 && columnToCheck >= 0 && rowToCheck < this.rows && columnToCheck < this.columns
+        this.isAlive(rowToCheck, columnToCheck) &&
+        this.isOnTheGrid(rowToCheck, columnToCheck)
       ) {
         livingCells++;
       }
     }
     return livingCells;
+  }
+
+  private isOnTheGrid(row: number, column: number) {
+    return row >= 0 && column >= 0 && row < this.rows && column < this.columns;
+  }
+
+  private isAlive(row: number, column: number) {
+    return this.grid[row][column] === CellState.ALIVE;
   }
 }
 
