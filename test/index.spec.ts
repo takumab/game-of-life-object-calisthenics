@@ -3,13 +3,9 @@ enum CellState {
   ALIVE = 1,
 }
 
-type Columns = number;
-type Rows = number;
-
-
 class Coordinates {
-  private x: number;
-  private y: number;
+  x: number;
+  y: number;
 
   constructor(x: number, y: number) {
     this.x = x;
@@ -17,10 +13,6 @@ class Coordinates {
   }
 
   // Feature envy
-  assign(cellState: CellState, grid: CellState[][]) {
-    grid[this.x][this.y] = cellState;
-    return grid;
-  }
 }
 
 class Grid {
@@ -49,7 +41,7 @@ class Grid {
   // Feature Envy
   // Inline the method assign
   addLivingCell(coordinates: Coordinates, livingCell: CellState) {
-    this.grid = coordinates.assign(livingCell, this.grid);
+    this.grid[coordinates.x][coordinates.y] = livingCell;
   }
 
   nextGeneration() {
