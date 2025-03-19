@@ -10,21 +10,16 @@ type Rows = number;
 class Grid {
   private rows: Rows;
   private columns: Columns;
+  private grid: CellState[][] = [];
 
   constructor(rows: Rows, columns: Columns) {
     this.rows = rows;
     this.columns = columns;
+    this.grid = Array.from(Array(rows), () => Array(columns).fill(CellState.DEAD));
   }
 
   currentGeneration() {
-    if (this.rows === 3 && this.columns === 3) {
-      return [
-        [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-        [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-        [CellState.DEAD, CellState.DEAD, CellState.DEAD]
-      ];
-    }
-    return [[CellState.DEAD]];
+    return this.grid;
   }
 }
 
@@ -40,12 +35,13 @@ describe("GridShould", () => {
     expect(actual).toEqual(expected);
   });
 
-  it("initialize with  with a population of nine dead cell", () => {
+  it("initialize with  with a population of nine dead cells", () => {
     const expected = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.DEAD, CellState.DEAD]
     ];
+
     const grid = new Grid(3, 3);
 
     const actual = grid.currentGeneration();
