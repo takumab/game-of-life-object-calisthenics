@@ -84,8 +84,8 @@ class Grid {
       let y = neighborsPositions[neighborsPositionIndex][0];
       let x = neighborsPositions[neighborsPositionIndex][1];
       if (
-        this.isAlive(y, x) &&
-        this.isOnTheGrid(y, x)
+        this.isAlive(x, y) &&
+        this.isOnTheGrid(x, y)
       ) {
         livingCellsCount++;
       }
@@ -93,12 +93,19 @@ class Grid {
     return livingCellsCount;
   }
 
-  private isOnTheGrid(row: number, column: number) {
-    return row >= 0 && column >= 0 && row < this.height && column < this.width;
+  // Data Clump
+  // Primitive Obsession
+  // Use Coordinates instead
+  private isOnTheGrid(x: number, y: number) {
+    return y >= 0 && y < this.height &&
+      x >= 0 && x < this.width;
   }
 
-  private isAlive(row: number, column: number) {
-    return this.grid[row][column] === CellState.ALIVE;
+  // Data Clump
+  // Primitive Obsession
+  // Use Coordinates instead
+  private isAlive(x: number, y: number) {
+    return this.grid[y][x] === CellState.ALIVE;
   }
 }
 
