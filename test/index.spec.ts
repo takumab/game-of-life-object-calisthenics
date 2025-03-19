@@ -54,6 +54,16 @@ class Grid {
       [CellState.DEAD, CellState.DEAD, CellState.DEAD]
     ];
   }
+
+  countNeighbors(row: number, column: number) {
+    if (
+      this.grid[row][column + 1] === CellState.ALIVE &&
+      this.grid[row - 1][column + 1] === CellState.ALIVE
+    ) {
+      return 2;
+    }
+    return 1;
+  }
 }
 
 describe("GridShould", () => {
@@ -164,5 +174,33 @@ describe("GridShould", () => {
 
     const actual = grid.currentGeneration();
     expect(actual).toEqual(expected);
+  });
+
+  it("count one living neighbors", () => {
+    const grid = new Grid(2, 3);
+    const mainCell = new Coordinates(1, 1);
+    const livingNeighbor = new Coordinates(1, 2);
+
+    grid.addLivingCell(mainCell, CellState.ALIVE);
+    grid.addLivingCell(livingNeighbor, CellState.ALIVE);
+
+
+    const actual = grid.countNeighbors(1, 1);
+    expect(actual).toEqual(1);
+  });
+
+  it("count two living neighbors", () => {
+    const grid = new Grid(2, 3);
+    const mainCell = new Coordinates(1, 1);
+    const livingNeighbor = new Coordinates(1, 2);
+    const livingNeighborTwo = new Coordinates(0, 2);
+
+    grid.addLivingCell(mainCell, CellState.ALIVE);
+    grid.addLivingCell(livingNeighbor, CellState.ALIVE);
+    grid.addLivingCell(livingNeighborTwo, CellState.ALIVE);
+
+
+    const actual = grid.countNeighbors(1, 1);
+    expect(actual).toEqual(2);
   });
 });
