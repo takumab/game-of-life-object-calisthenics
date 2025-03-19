@@ -11,8 +11,6 @@ class Coordinates {
     this.x = x;
     this.y = y;
   }
-
-  // Feature envy
 }
 
 class Grid {
@@ -38,8 +36,6 @@ class Grid {
     return this.grid;
   }
 
-  // Feature Envy
-  // Inline the method assign
   addLivingCell(coordinates: Coordinates, livingCell: CellState) {
     this.grid[coordinates.x][coordinates.y] = livingCell;
   }
