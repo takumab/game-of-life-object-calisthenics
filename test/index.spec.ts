@@ -16,25 +16,28 @@ class Coordinates {
     this.y = y;
   }
 
-  plot(livingCell: CellState, grid: CellState[][]) {
-    grid[this.x][this.y] = livingCell;
+  // Feature envy
+  assign(cellState: CellState, grid: CellState[][]) {
+    grid[this.x][this.y] = cellState;
     return grid;
   }
 }
 
 class Grid {
   private grid: CellState[][] = [];
-  private rows: Rows;
-  private columns: Columns;
+  private height: number;
+  private width: number;
 
-  constructor(rows: Rows, columns: Columns) {
-    this.grid = Array.from(Array(rows), () => Array(columns).fill(CellState.DEAD));
-    this.rows = this.grid.length;
-    this.columns = this.grid[0].length;
+  constructor(height: number, width: number) {
+    this.grid = Array.from(Array(height), () => Array(width).fill(CellState.DEAD));
+    this.height = this.grid.length;
+    this.width = this.grid[0].length;
   }
 
+  // no getters
+  // risk of referencing this grid from the outside
   currentGeneration() {
-    if (this.rows === 2 && this.columns === 3) {
+    if (this.height === 2 && this.width === 3) {
       return [
         [CellState.DEAD, CellState.DEAD, CellState.DEAD],
         [CellState.DEAD, CellState.DEAD, CellState.DEAD]
@@ -43,8 +46,10 @@ class Grid {
     return this.grid;
   }
 
+  // Feature Envy
+  // Inline the method assign
   addLivingCell(coordinates: Coordinates, livingCell: CellState) {
-    this.grid = coordinates.plot(livingCell, this.grid);
+    this.grid = coordinates.assign(livingCell, this.grid);
   }
 
   nextGeneration() {
@@ -55,35 +60,41 @@ class Grid {
     ];
   }
 
-  countNeighbors(row: number, column: number) {
-    let livingCells = 0;
-    const neighborsToCheck = [
-      [row - 1, column - 1],
-      [row - 1, column],
-      [row - 1, column + 1],
-      [row, column - 1],
-      [row, column + 1],
-      [row + 1, column + 1],
-      [row + 1, column],
-      [row + 1, column - 1]
+  // Data clump
+  // Feature Envy
+  countNeighbors(x: number, y: number) {
+    // Primitive Obsession
+    // Use a list of Coordinates
+    const neighborsPositions = [
+      [y - 1, x - 1],
+      [y - 1, x],
+      [y - 1, x + 1],
+      [y, x - 1],
+      [y, x + 1],
+      [y + 1, x + 1],
+      [y + 1, x],
+      [y + 1, x - 1]
     ];
+    return this.countAliveNeighbors(neighborsPositions);
+  }
 
-
-    for (let i = 0; i < neighborsToCheck.length; i++) {
-      let rowToCheck = neighborsToCheck[i][0];
-      let columnToCheck = neighborsToCheck[i][1];
+  private countAliveNeighbors(neighborsPositions: number[][]) {
+    let livingCellsCount = 0;
+    for (let neighborsPositionIndex = 0; neighborsPositionIndex < neighborsPositions.length; neighborsPositionIndex++) {
+      let y = neighborsPositions[neighborsPositionIndex][0];
+      let x = neighborsPositions[neighborsPositionIndex][1];
       if (
-        this.isAlive(rowToCheck, columnToCheck) &&
-        this.isOnTheGrid(rowToCheck, columnToCheck)
+        this.isAlive(y, x) &&
+        this.isOnTheGrid(y, x)
       ) {
-        livingCells++;
+        livingCellsCount++;
       }
     }
-    return livingCells;
+    return livingCellsCount;
   }
 
   private isOnTheGrid(row: number, column: number) {
-    return row >= 0 && column >= 0 && row < this.rows && column < this.columns;
+    return row >= 0 && column >= 0 && row < this.height && column < this.width;
   }
 
   private isAlive(row: number, column: number) {
