@@ -34,7 +34,7 @@ class Cell {
   }
 
   setCellState(cellState: CellState) {
-    this.state = cellState
+    this.state = cellState;
   }
 }
 
@@ -45,7 +45,9 @@ class Grid {
   private width: number;
 
   constructor(height: number, width: number) {
-    this.grid = Array.from(Array(height), () => Array(width).fill(CellState.DEAD));
+    this.grid = Array.from(Array(height), () =>
+      Array(width).fill(CellState.DEAD),
+    );
     this.height = height;
     this.width = width;
     for (let y = 0; y < height; y++) {
@@ -57,12 +59,11 @@ class Grid {
 
   addLivingCell(coordinates: Coordinates, livingCell: CellState, cell?: Cell) {
     if (cell) {
-      cell.setCellState(livingCell)
-      this.gridNew[coordinates.y] = cell
+      cell.setCellState(livingCell);
+      this.gridNew[coordinates.y] = cell;
     }
     this.grid[coordinates.x][coordinates.y] = livingCell;
   }
-
 
   // no getters
   // risk of referencing this grid from the outside
@@ -88,7 +89,7 @@ class Grid {
     this.grid = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD]
+      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
     ];
   }
 
@@ -104,7 +105,7 @@ class Grid {
       [y, x + 1],
       [y + 1, x + 1],
       [y + 1, x],
-      [y + 1, x - 1]
+      [y + 1, x - 1],
     ];
     return this.countAliveNeighbors(neighborsPositions);
   }
@@ -115,8 +116,10 @@ class Grid {
     for (let x = 0; x < this.width; x++) {
       cellState[x] = [];
       for (let y = 0; y < this.height; y++) {
-        let foundCells = currentGenerationNew.find((cell: Cell) => cell.hasPosition(new Coordinates(x, y)));
-          cellState[x][y] = foundCells ? foundCells.getCellState() : 0;
+        let foundCells = currentGenerationNew.find((cell: Cell) =>
+          cell.hasPosition(new Coordinates(x, y)),
+        );
+        cellState[x][y] = foundCells ? foundCells.getCellState() : 0;
       }
     }
     return cellState;
@@ -124,13 +127,14 @@ class Grid {
 
   private countAliveNeighbors(neighborsPositions: number[][]) {
     let livingCellsCount = 0;
-    for (let neighborsPositionIndex = 0; neighborsPositionIndex < neighborsPositions.length; neighborsPositionIndex++) {
+    for (
+      let neighborsPositionIndex = 0;
+      neighborsPositionIndex < neighborsPositions.length;
+      neighborsPositionIndex++
+    ) {
       let y = neighborsPositions[neighborsPositionIndex][0];
       let x = neighborsPositions[neighborsPositionIndex][1];
-      if (
-        this.isAlive(x, y) &&
-        this.isOnTheGrid(x, y)
-      ) {
+      if (this.isAlive(x, y) && this.isOnTheGrid(x, y)) {
         livingCellsCount++;
       }
     }
@@ -141,8 +145,7 @@ class Grid {
   // Primitive Obsession
   // Use Coordinates instead
   private isOnTheGrid(x: number, y: number) {
-    return y >= 0 && y < this.height &&
-      x >= 0 && x < this.width;
+    return y >= 0 && y < this.height && x >= 0 && x < this.width;
   }
 
   // Data Clump
@@ -155,9 +158,7 @@ class Grid {
 
 describe("GridShould", () => {
   it("initialize with a population of one dead cell", () => {
-    const expected = [
-      [CellState.DEAD]
-    ];
+    const expected = [[CellState.DEAD]];
     const grid = new Grid(1, 1);
 
     const actual = grid.currentGeneration();
@@ -169,7 +170,7 @@ describe("GridShould", () => {
     const expected = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD]
+      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
     ];
 
     const grid = new Grid(3, 3);
@@ -180,12 +181,10 @@ describe("GridShould", () => {
   });
 
   it("add a living cell on a 3x1 grid", () => {
-    const expected = [
-      [CellState.DEAD, CellState.ALIVE, CellState.DEAD]
-    ];
+    const expected = [[CellState.DEAD, CellState.ALIVE, CellState.DEAD]];
     const grid = new Grid(3, 1);
     const coordinates = new Coordinates(0, 1);
-    const cell = new Cell(coordinates)
+    const cell = new Cell(coordinates);
 
     grid.addLivingCell(coordinates, CellState.ALIVE, cell);
 
@@ -197,11 +196,11 @@ describe("GridShould", () => {
     const expected = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.ALIVE, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD]
+      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
     ];
     const grid = new Grid(3, 3);
     const coordinates = new Coordinates(1, 1);
-    const cell = new Cell(coordinates)
+    const cell = new Cell(coordinates);
 
     grid.addLivingCell(coordinates, CellState.ALIVE, cell);
 
@@ -213,13 +212,13 @@ describe("GridShould", () => {
     const expected = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.ALIVE, CellState.ALIVE],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD]
+      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
     ];
     const grid = new Grid(3, 3);
     const coordinates = new Coordinates(1, 1);
     const livingNeighborOne = new Coordinates(1, 2);
     const cell1 = new Cell(coordinates);
-    const cell2 = new Cell(livingNeighborOne)
+    const cell2 = new Cell(livingNeighborOne);
 
     grid.addLivingCell(coordinates, CellState.ALIVE, cell1);
     grid.addLivingCell(livingNeighborOne, CellState.ALIVE, cell2);
@@ -232,7 +231,7 @@ describe("GridShould", () => {
     const expected = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD]
+      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
     ];
     const grid = new Grid(3, 3);
     const mainCell = new Coordinates(1, 1);
@@ -248,7 +247,7 @@ describe("GridShould", () => {
   it("cause live cell to die when has only one living neighbor", () => {
     const expected = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD]
+      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
     ];
     const grid = new Grid(3, 2);
     const mainCell = new Coordinates(1, 1);
@@ -271,7 +270,6 @@ describe("GridShould", () => {
     grid.addLivingCell(mainCell, CellState.ALIVE);
     grid.addLivingCell(livingNeighbor, CellState.ALIVE);
 
-
     const actual = grid.countNeighbors(1, 1);
     expect(actual).toEqual(1);
   });
@@ -285,7 +283,6 @@ describe("GridShould", () => {
     grid.addLivingCell(mainCell, CellState.ALIVE);
     grid.addLivingCell(livingNeighbor, CellState.ALIVE);
     grid.addLivingCell(livingNeighborTwo, CellState.ALIVE);
-
 
     const actual = grid.countNeighbors(1, 1);
     expect(actual).toEqual(2);
@@ -302,7 +299,6 @@ describe("GridShould", () => {
     grid.addLivingCell(livingNeighbor, CellState.ALIVE);
     grid.addLivingCell(livingNeighborTwo, CellState.ALIVE);
     grid.addLivingCell(livingNeighborThree, CellState.ALIVE);
-
 
     const actual = grid.countNeighbors(1, 1);
     expect(actual).toEqual(3);
@@ -321,7 +317,6 @@ describe("GridShould", () => {
     grid.addLivingCell(livingNeighborTwo, CellState.ALIVE);
     grid.addLivingCell(livingNeighborThree, CellState.ALIVE);
     grid.addLivingCell(livingNeighborFour, CellState.ALIVE);
-
 
     const actual = grid.countNeighbors(1, 1);
     expect(actual).toEqual(4);
