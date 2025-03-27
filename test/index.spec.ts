@@ -33,8 +33,8 @@ class Cell {
     return this.state;
   }
 
-  setCellState(cellState: CellState) {
-    this.state = cellState;
+  comeAlive() {
+    this.state = CellState.ALIVE;
   }
 }
 
@@ -59,7 +59,7 @@ class Grid {
 
   addLivingCell(coordinates: Coordinates, livingCell: CellState, cell?: Cell) {
     if (cell) {
-      cell.setCellState(livingCell);
+      cell.comeAlive();
       this.gridNew[coordinates.y] = cell;
     }
     this.grid[coordinates.x][coordinates.y] = livingCell;
