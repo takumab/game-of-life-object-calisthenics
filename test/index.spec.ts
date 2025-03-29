@@ -90,11 +90,6 @@ class Grid {
     for (let gridIndex = 0; gridIndex < this.gridNew.length; gridIndex++) {
       this.gridHashMap.set(gridIndex, this.gridNew[gridIndex]);
     }
-    this.grid = [
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-    ];
   }
 
   // Feature Envy
