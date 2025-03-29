@@ -40,6 +40,7 @@ class Cell {
 
 class Grid {
   private readonly gridNew: Cell[] = [];
+  private gridHashMap: Map<number, Cell> = new Map([]);
   private grid: CellState[][] = [];
   private height: number;
   private width: number;
@@ -86,6 +87,9 @@ class Grid {
   }
 
   nextGeneration() {
+    for (let gridIndex = 0; gridIndex < this.gridNew.length; gridIndex++) {
+      this.gridHashMap.set(gridIndex, this.gridNew[gridIndex]);
+    }
     this.grid = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
