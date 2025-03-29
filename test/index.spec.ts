@@ -158,91 +158,72 @@ class Grid {
 }
 
 describe("GridShould", () => {
-  it("initialize with a population of one dead cell", () => {
-    const expected = [[CellState.DEAD]];
-    const grid = new Grid(1, 1);
+  describe("Initilize population", () => {
+    it("initialize gridNew with a population of one dead cell", () => {
+      let coordinates = new Coordinates(0, 0);
+      const expected = [new Cell(coordinates)];
+      const grid = new Grid(1, 1);
 
-    const actual = grid.currentGeneration();
+      const actual = grid.currentGenerationNew();
 
-    expect(actual).toEqual(expected);
+      expect(actual).toEqual(expected);
+    });
+
+    it("initialize Grid with a population of nine dead cells", () => {
+      const expected = [
+        new Cell(new Coordinates(0, 0)),
+        new Cell(new Coordinates(1, 0)),
+        new Cell(new Coordinates(2, 0)),
+        new Cell(new Coordinates(0, 1)),
+        new Cell(new Coordinates(1, 1)),
+        new Cell(new Coordinates(2, 1)),
+        new Cell(new Coordinates(0, 2)),
+        new Cell(new Coordinates(1, 2)),
+        new Cell(new Coordinates(2, 2)),
+      ];
+
+      const grid = new Grid(3, 3);
+
+      const actual = grid.currentGenerationNew();
+
+      expect(actual).toEqual(expected);
+    });
   });
 
-  it("initialize gridNew with a population of one dead cell", () => {
-    let coordinates = new Coordinates(0, 0);
-    const expected = [new Cell(coordinates)];
-    const grid = new Grid(1, 1);
+  describe("Add living cell", () => {
+    it("add a living cell at coordinate 0:1", () => {
+      const grid = new Grid(3, 1);
+      const coordinates = new Coordinates(0, 1);
+      const cell = new Cell(coordinates);
 
-    const actual = grid.currentGenerationNew();
+      grid.addLivingCell(coordinates, CellState.ALIVE, cell);
 
-    expect(actual).toEqual(expected);
-  });
+      expect(cell.getCellState()).toEqual(CellState.ALIVE);
+    });
 
-  it("initialize with  with a population of nine dead cells", () => {
-    const expected = [
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-    ];
+    it("add a living cell at coordinate 1:1", () => {
+      const grid = new Grid(3, 3);
+      const coordinates = new Coordinates(1, 1);
+      const cell = new Cell(coordinates);
 
-    const grid = new Grid(3, 3);
+      grid.addLivingCell(coordinates, CellState.ALIVE, cell);
 
-    const actual = grid.currentGeneration();
+      expect(cell.getCellState()).toEqual(CellState.ALIVE);
+    });
 
-    expect(actual).toEqual(expected);
-  });
+    it("add multiple living cells at coordinates 1:1 and 1:2", () => {
+      const grid = new Grid(3, 3);
+      const coordinates = new Coordinates(1, 1);
+      const neighborCoordinates = new Coordinates(1, 2);
+      const cell = new Cell(coordinates);
+      const neighbor = new Cell(neighborCoordinates);
 
-  it("initialize Grid with a population of nine dead cells", () => {
-    const expected = [
-      new Cell(new Coordinates(0, 0)),
-      new Cell(new Coordinates(1, 0)),
-      new Cell(new Coordinates(2, 0)),
-      new Cell(new Coordinates(0, 1)),
-      new Cell(new Coordinates(1, 1)),
-      new Cell(new Coordinates(2, 1)),
-      new Cell(new Coordinates(0, 2)),
-      new Cell(new Coordinates(1, 2)),
-      new Cell(new Coordinates(2, 2)),
-    ];
+      grid.addLivingCell(coordinates, CellState.ALIVE, cell);
+      grid.addLivingCell(neighborCoordinates, CellState.ALIVE, neighbor);
 
-    const grid = new Grid(3, 3);
-
-    const actual = grid.currentGenerationNew();
-
-    expect(actual).toEqual(expected);
-  });
-
-  it("add a living cell at coordinate 0:1", () => {
-    const grid = new Grid(3, 1);
-    const coordinates = new Coordinates(0, 1);
-    const cell = new Cell(coordinates);
-
-    grid.addLivingCell(coordinates, CellState.ALIVE, cell);
-
-    expect(cell.getCellState()).toEqual(CellState.ALIVE);
-  });
-
-  it("add a living cell at coordinate 1:1", () => {
-    const grid = new Grid(3, 3);
-    const coordinates = new Coordinates(1, 1);
-    const cell = new Cell(coordinates);
-
-    grid.addLivingCell(coordinates, CellState.ALIVE, cell);
-
-    expect(cell.getCellState()).toEqual(CellState.ALIVE);
-  });
-
-  it("add multiple living cells at coordinates 1:1 and 1:2", () => {
-    const grid = new Grid(3, 3);
-    const coordinates = new Coordinates(1, 1);
-    const neighborCoordinates = new Coordinates(1, 2);
-    const cell = new Cell(coordinates);
-    const neighbor = new Cell(neighborCoordinates);
-
-    grid.addLivingCell(coordinates, CellState.ALIVE, cell);
-    grid.addLivingCell(neighborCoordinates, CellState.ALIVE, neighbor);
-
-    expect(cell.getCellState()).toEqual(CellState.ALIVE);
-    expect(neighbor.getCellState()).toEqual(CellState.ALIVE);
+      expect(cell.getCellState()).toEqual(CellState.ALIVE);
+      expect(neighbor.getCellState()).toEqual(CellState.ALIVE);
+    });
   });
 
   it("cause live cell to die when has no living neighbors", () => {
