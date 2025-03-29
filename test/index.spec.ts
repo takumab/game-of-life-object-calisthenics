@@ -60,7 +60,6 @@ class Grid {
   addLivingCell(coordinates: Coordinates, livingCell: CellState, cell?: Cell) {
     if (cell) {
       cell.comeAlive();
-      cell;
       this.gridNew[coordinates.y] = cell;
     }
     this.grid[coordinates.x][coordinates.y] = livingCell;
