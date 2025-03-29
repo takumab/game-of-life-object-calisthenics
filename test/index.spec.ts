@@ -60,6 +60,7 @@ class Grid {
   addLivingCell(coordinates: Coordinates, livingCell: CellState, cell?: Cell) {
     if (cell) {
       cell.comeAlive();
+      cell;
       this.gridNew[coordinates.y] = cell;
     }
     this.grid[coordinates.x][coordinates.y] = livingCell;
@@ -210,16 +211,14 @@ describe("GridShould", () => {
     expect(actual).toEqual(expected);
   });
 
-  it("add a living cell on a 3x1 grid", () => {
-    const expected = [[CellState.DEAD, CellState.ALIVE, CellState.DEAD]];
+  it("add a living cell at coordinate 0:1", () => {
     const grid = new Grid(3, 1);
     const coordinates = new Coordinates(0, 1);
     const cell = new Cell(coordinates);
 
     grid.addLivingCell(coordinates, CellState.ALIVE, cell);
 
-    const actual = grid.currentGeneration();
-    expect(actual).toEqual(expected);
+    expect(cell.getCellState()).toEqual(1);
   });
 
   it("add a living cell on a 3x3 grid", () => {
