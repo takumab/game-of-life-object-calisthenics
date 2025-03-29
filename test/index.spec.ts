@@ -190,6 +190,26 @@ describe("GridShould", () => {
     expect(actual).toEqual(expected);
   });
 
+  it("initialize Grid with a population of nine dead cells", () => {
+    const expected = [
+      new Cell(new Coordinates(0, 0)),
+      new Cell(new Coordinates(1, 0)),
+      new Cell(new Coordinates(2, 0)),
+      new Cell(new Coordinates(0, 1)),
+      new Cell(new Coordinates(1, 1)),
+      new Cell(new Coordinates(2, 1)),
+      new Cell(new Coordinates(0, 2)),
+      new Cell(new Coordinates(1, 2)),
+      new Cell(new Coordinates(2, 2)),
+    ];
+
+    const grid = new Grid(3, 3);
+
+    const actual = grid.currentGenerationNew();
+
+    expect(actual).toEqual(expected);
+  });
+
   it("add a living cell on a 3x1 grid", () => {
     const expected = [[CellState.DEAD, CellState.ALIVE, CellState.DEAD]];
     const grid = new Grid(3, 1);
