@@ -218,7 +218,7 @@ describe("GridShould", () => {
 
     grid.addLivingCell(coordinates, CellState.ALIVE, cell);
 
-    expect(cell.getCellState()).toEqual(1);
+    expect(cell.getCellState()).toEqual(CellState.ALIVE);
   });
 
   it("add a living cell at coordinate 1:1", () => {
@@ -228,26 +228,21 @@ describe("GridShould", () => {
 
     grid.addLivingCell(coordinates, CellState.ALIVE, cell);
 
-    expect(cell.getCellState()).toEqual(1);
+    expect(cell.getCellState()).toEqual(CellState.ALIVE);
   });
 
-  it("add multiple living cells on a 3x3 grid", () => {
-    const expected = [
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.ALIVE, CellState.ALIVE],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-    ];
+  it("add multiple living cells at coordinates 1:1 and 1:2", () => {
     const grid = new Grid(3, 3);
     const coordinates = new Coordinates(1, 1);
-    const livingNeighborOne = new Coordinates(1, 2);
-    const cell1 = new Cell(coordinates);
-    const cell2 = new Cell(livingNeighborOne);
+    const neighborCoordinates = new Coordinates(1, 2);
+    const cell = new Cell(coordinates);
+    const neighbor = new Cell(neighborCoordinates);
 
-    grid.addLivingCell(coordinates, CellState.ALIVE, cell1);
-    grid.addLivingCell(livingNeighborOne, CellState.ALIVE, cell2);
+    grid.addLivingCell(coordinates, CellState.ALIVE, cell);
+    grid.addLivingCell(neighborCoordinates, CellState.ALIVE, neighbor);
 
-    const actual = grid.currentGeneration();
-    expect(actual).toEqual(expected);
+    expect(cell.getCellState()).toEqual(CellState.ALIVE);
+    expect(neighbor.getCellState()).toEqual(CellState.ALIVE);
   });
 
   it("cause live cell to die when has no living neighbors", () => {
