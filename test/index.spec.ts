@@ -166,6 +166,16 @@ describe("GridShould", () => {
     expect(actual).toEqual(expected);
   });
 
+  it("initialize gridNew with a population of one dead cell", () => {
+    let coordinates = new Coordinates(0, 0);
+    const expected = [new Cell(coordinates)];
+    const grid = new Grid(1, 1);
+
+    const actual = grid.currentGenerationNew();
+
+    expect(actual).toEqual(expected);
+  });
+
   it("initialize with  with a population of nine dead cells", () => {
     const expected = [
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
