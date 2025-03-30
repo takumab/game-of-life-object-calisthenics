@@ -231,9 +231,9 @@ describe("GridShould", () => {
       [CellState.DEAD, CellState.DEAD, CellState.DEAD],
     ];
     const grid = new Grid(3, 3);
-    const mainCell = new Coordinates(1, 1);
+    const coordinates = new Coordinates(1, 1);
 
-    grid.addLivingCell(mainCell, CellState.ALIVE);
+    grid.addLivingCell(coordinates, CellState.ALIVE);
 
     grid.nextGeneration();
 
