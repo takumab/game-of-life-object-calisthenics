@@ -10,4 +10,5 @@
         - [] `nextGeneration` should use the hash map of `Cell`s to change the state of the grid
         - [X] `isAlive` should use the hash map of `Cell`s to check whether cell is alive or not
             - [X] `findCellAt` should use the coordinates to return the correct `Cell`
+            - [X] `isAlive` should use a method from `Cell` to determine if cell is alive instead of `getCellState`
 

@@ -36,6 +36,10 @@ class Cell {
   live() {
     this.state = CellState.ALIVE;
   }
+
+  isAlive() {
+    return this.state === CellState.ALIVE;
+  }
 }
 
 class Grid {
@@ -108,7 +112,7 @@ class Grid {
 
   private isAlive(coordinates: Coordinates) {
     const foundCell = this.findCellAt(coordinates);
-    return foundCell?.getCellState() === CellState.ALIVE;
+    return foundCell?.isAlive();
   }
 }
 
