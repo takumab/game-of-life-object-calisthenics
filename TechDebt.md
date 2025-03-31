@@ -9,6 +9,6 @@
           - [X] `live` should use state from `Cell` instead of passing in state
         - [] `nextGeneration` should use the hash map of `Cell`s to change the state of the grid
         - [] `isAlive` should use the hash map of `Cell`s to check whether cell is alive or not
-          - [] `isAlive` should pass coordinates to a `Cell` method that finds the cell at the coordinates provided
-            - [] `findCellAt` should use the coordinates to return the correct `Cell`
+          - [X] `isAlive` should pass coordinates to a `Cell` method that finds the cell at the coordinates provided
+            - [X] `findCellAt` should use the coordinates to return the correct `Cell`
 
