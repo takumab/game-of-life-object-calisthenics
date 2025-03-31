@@ -40,14 +40,10 @@ class Cell {
 
 class Grid {
   private readonly gridNew: Cell[] = [];
-  private grid: CellState[][] = [];
   private height: number;
   private width: number;
 
   constructor(height: number, width: number) {
-    this.grid = Array.from(Array(height), () =>
-      Array(width).fill(CellState.DEAD),
-    );
     this.height = height;
     this.width = width;
     for (let y = 0; y < height; y++) {
