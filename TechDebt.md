@@ -4,7 +4,7 @@
       - [X]`grid` should be initialised with nested for loop with all the `Cell`s positions
         - [X] `currentGeneration` should return a list of `Cell`s
             - [X] Create a map between `currentGenerationNew` and `currentGeneration`
-        - [] `addLivingCell` should use `Cell` to tell the cell to become alive
+        - [X] `addLivingCell` should use `Cell` to tell the cell to become alive
           - [X] `findCellAt` should be used to locate the cell for `addLivingCell` 
           - [X] `live` should use state from `Cell` instead of passing in state
         - [] `nextGeneration` should use the hash map of `Cell`s to change the state of the grid
