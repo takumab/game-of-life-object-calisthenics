@@ -29,10 +29,6 @@ class Cell {
     return this.coordinates.equals(coordinates);
   }
 
-  getCellState() {
-    return this.state;
-  }
-
   live() {
     this.state = CellState.ALIVE;
   }
