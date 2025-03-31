@@ -15,6 +15,19 @@ class Coordinates {
   equals(coordinates: Coordinates) {
     return this.x === coordinates.x && this.y === coordinates.y;
   }
+
+  neighborsPositions() {
+    return [
+      [this.y - 1, this.x - 1],
+      [this.y - 1, this.x],
+      [this.y - 1, this.x + 1],
+      [this.y, this.x - 1],
+      [this.y, this.x + 1],
+      [this.y + 1, this.x + 1],
+      [this.y + 1, this.x],
+      [this.y + 1, this.x - 1],
+    ];
+  }
 }
 
 class Cell {
@@ -63,20 +76,14 @@ class Grid {
   }
 
   // Feature Envy
-  countNeighbors(x: number, y: number) {
-    // Primitive Obsession
+  // Primitive Obsession
+  countNeighbors(x: number, y: number, coordinates?: Coordinates) {
     // Use a list of Coordinates
-    const neighborsPositions = [
-      [y - 1, x - 1],
-      [y - 1, x],
-      [y - 1, x + 1],
-      [y, x - 1],
-      [y, x + 1],
-      [y + 1, x + 1],
-      [y + 1, x],
-      [y + 1, x - 1],
-    ];
-    return this.countAliveNeighbors(neighborsPositions);
+    let neighborCoordinates;
+    if (coordinates) {
+      neighborCoordinates = coordinates.neighborsPositions();
+      return this.countAliveNeighbors(neighborCoordinates);
+    }
   }
 
   private findCellAt(coordinates: Coordinates) {
@@ -224,7 +231,7 @@ describe("GridShould", () => {
     grid.addLivingCell(mainCell);
     grid.addLivingCell(livingNeighbor);
 
-    const actual = grid.countNeighbors(1, 1);
+    const actual = grid.countNeighbors(1, 1, mainCell);
     expect(actual).toEqual(1);
   });
 
@@ -238,7 +245,7 @@ describe("GridShould", () => {
     grid.addLivingCell(livingNeighbor);
     grid.addLivingCell(livingNeighborTwo);
 
-    const actual = grid.countNeighbors(1, 1);
+    const actual = grid.countNeighbors(1, 1, mainCell);
     expect(actual).toEqual(2);
   });
 
@@ -254,7 +261,7 @@ describe("GridShould", () => {
     grid.addLivingCell(livingNeighborTwo);
     grid.addLivingCell(livingNeighborThree);
 
-    const actual = grid.countNeighbors(1, 1);
+    const actual = grid.countNeighbors(1, 1, mainCell);
     expect(actual).toEqual(3);
   });
 
@@ -272,7 +279,7 @@ describe("GridShould", () => {
     grid.addLivingCell(livingNeighborThree);
     grid.addLivingCell(livingNeighborFour);
 
-    const actual = grid.countNeighbors(1, 1);
+    const actual = grid.countNeighbors(1, 1, mainCell);
     expect(actual).toEqual(4);
   });
 });
