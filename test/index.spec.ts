@@ -75,15 +75,9 @@ class Grid {
     return this.grid;
   }
 
-  // Feature Envy
-  // Primitive Obsession
-  countNeighbors(x: number, y: number, coordinates?: Coordinates) {
-    // Use a list of Coordinates
-    let neighborCoordinates;
-    if (coordinates) {
-      neighborCoordinates = coordinates.neighborsPositions();
-      return this.countAliveNeighbors(neighborCoordinates);
-    }
+  countNeighbors(coordinates: Coordinates) {
+    const neighborsPositions = coordinates.neighborsPositions();
+    return this.countAliveNeighbors(neighborsPositions);
   }
 
   private findCellAt(coordinates: Coordinates) {
@@ -231,7 +225,7 @@ describe("GridShould", () => {
     grid.addLivingCell(mainCell);
     grid.addLivingCell(livingNeighbor);
 
-    const actual = grid.countNeighbors(1, 1, mainCell);
+    const actual = grid.countNeighbors(mainCell);
     expect(actual).toEqual(1);
   });
 
@@ -245,7 +239,7 @@ describe("GridShould", () => {
     grid.addLivingCell(livingNeighbor);
     grid.addLivingCell(livingNeighborTwo);
 
-    const actual = grid.countNeighbors(1, 1, mainCell);
+    const actual = grid.countNeighbors(mainCell);
     expect(actual).toEqual(2);
   });
 
@@ -261,7 +255,7 @@ describe("GridShould", () => {
     grid.addLivingCell(livingNeighborTwo);
     grid.addLivingCell(livingNeighborThree);
 
-    const actual = grid.countNeighbors(1, 1, mainCell);
+    const actual = grid.countNeighbors(mainCell);
     expect(actual).toEqual(3);
   });
 
@@ -279,7 +273,7 @@ describe("GridShould", () => {
     grid.addLivingCell(livingNeighborThree);
     grid.addLivingCell(livingNeighborFour);
 
-    const actual = grid.countNeighbors(1, 1, mainCell);
+    const actual = grid.countNeighbors(mainCell);
     expect(actual).toEqual(4);
   });
 });
