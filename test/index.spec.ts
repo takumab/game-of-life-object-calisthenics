@@ -33,14 +33,13 @@ class Cell {
     return this.state;
   }
 
-  live(cellState: CellState) {
-    this.state = cellState;
+  live() {
+    this.state = CellState.ALIVE;
   }
 }
 
 class Grid {
   private readonly gridNew: Cell[] = [];
-  private gridHashMap: Map<number, Cell> = new Map([]);
   private grid: CellState[][] = [];
   private height: number;
   private width: number;
@@ -60,7 +59,7 @@ class Grid {
 
   addLivingCell(coordinates: Coordinates, livingCell: CellState) {
     const foundCell = this.findCellAt(coordinates);
-    foundCell?.live(livingCell);
+    foundCell?.live();
     this.grid[coordinates.x][coordinates.y] = livingCell;
   }
 
@@ -158,7 +157,7 @@ describe("GridShould", () => {
       const grid = new Grid(3, 1);
       const coordinates = new Coordinates(0, 1);
       const cell = new Cell(coordinates);
-      cell.live(CellState.ALIVE);
+      cell.live();
 
       const expected = [
         new Cell(new Coordinates(0, 0)),
@@ -173,7 +172,7 @@ describe("GridShould", () => {
 
     it("add a living cell at coordinate 1:1", () => {
       const cell = new Cell(new Coordinates(2, 1));
-      cell.live(CellState.ALIVE);
+      cell.live();
       const expected = [
         new Cell(new Coordinates(0, 0)),
         new Cell(new Coordinates(1, 0)),
@@ -201,8 +200,8 @@ describe("GridShould", () => {
       const neighborCoordinates = new Coordinates(1, 2);
       const cell = new Cell(coordinates);
       const neighbor = new Cell(neighborCoordinates);
-      cell.live(CellState.ALIVE);
-      neighbor.live(CellState.ALIVE);
+      cell.live();
+      neighbor.live();
 
       const expected = [
         new Cell(new Coordinates(0, 0)),
