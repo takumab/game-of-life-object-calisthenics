@@ -39,7 +39,7 @@ class Cell {
 }
 
 class Grid {
-  private readonly gridNew: Cell[] = [];
+  private readonly grid: Cell[] = [];
   private height: number;
   private width: number;
 
@@ -48,7 +48,7 @@ class Grid {
     this.width = width;
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        this.gridNew.push(new Cell(new Coordinates(x, y)));
+        this.grid.push(new Cell(new Coordinates(x, y)));
       }
     }
   }
@@ -59,7 +59,7 @@ class Grid {
   }
 
   currentGeneration() {
-    return this.gridNew;
+    return this.grid;
   }
 
   // Feature Envy
@@ -80,7 +80,7 @@ class Grid {
   }
 
   private findCellAt(coordinates: Coordinates) {
-    return this.gridNew.find((cell: Cell) => cell.hasPosition(coordinates));
+    return this.grid.find((cell: Cell) => cell.hasPosition(coordinates));
   }
 
   private countAliveNeighbors(neighborsPositions: number[][]) {

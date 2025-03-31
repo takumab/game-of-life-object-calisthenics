@@ -1,7 +1,7 @@
 - Goal use HashMap`Cell`s instead of the grid
     - [X] `height` should be initialised with the parameter
     - [X] `width` should be initialised with the parameter
-      - [X]`grid` should be initialised with nested for loop with all the `Cell`s positions
+      - [X] `grid` should be initialised with nested for loop with all the `Cell`s positions
         - [X] `currentGeneration` should return a list of `Cell`s
             - [X] Create a map between `currentGenerationNew` and `currentGeneration`
         - [X] `addLivingCell` should use `Cell` to tell the cell to become alive
