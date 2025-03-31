@@ -84,6 +84,7 @@ class Grid {
     return this.grid.find((cell: Cell) => cell.hasPosition(coordinates));
   }
 
+  // Primitive Obsession
   private countAliveNeighbors(neighborsPositions: number[][]) {
     let livingCellsCount = 0;
     for (
