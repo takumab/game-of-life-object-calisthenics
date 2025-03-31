@@ -33,8 +33,8 @@ class Cell {
     return this.state;
   }
 
-  comeAlive() {
-    this.state = CellState.ALIVE;
+  live(cellState: CellState) {
+    this.state = cellState;
   }
 }
 
@@ -58,38 +58,14 @@ class Grid {
     }
   }
 
-  addLivingCell(coordinates: Coordinates, livingCell: CellState, cell?: Cell) {
-    if (cell) {
-      cell.comeAlive();
-      this.gridNew[coordinates.y] = cell;
-    }
+  addLivingCell(coordinates: Coordinates, livingCell: CellState) {
+    const foundCell = this.findCellAt(coordinates);
+    foundCell?.live(livingCell);
     this.grid[coordinates.x][coordinates.y] = livingCell;
   }
 
-  // no getters
-  // risk of referencing this grid from the outside
   currentGeneration() {
-    const currentGenerationNew = this.currentGenerationNew();
-    return this.mapToOldGrid(currentGenerationNew);
-  }
-
-  currentGenerationNew() {
-    const tempGrid = [];
-    if (this.height === 3 && this.width === 2) {
-      for (let y = 0; y < this.height; y++) {
-        for (let x = 0; x < this.width; x++) {
-          tempGrid.push(new Cell(new Coordinates(x, y)));
-        }
-      }
-      return tempGrid;
-    }
     return this.gridNew;
-  }
-
-  nextGeneration() {
-    for (let gridIndex = 0; gridIndex < this.gridNew.length; gridIndex++) {
-      this.gridHashMap.set(gridIndex, this.gridNew[gridIndex]);
-    }
   }
 
   // Feature Envy
@@ -109,19 +85,8 @@ class Grid {
     return this.countAliveNeighbors(neighborsPositions);
   }
 
-  // Data clump
-  private mapToOldGrid(currentGenerationNew: Cell[]): CellState[][] {
-    const cellState: CellState[][] = [];
-    for (let x = 0; x < this.width; x++) {
-      cellState[x] = [];
-      for (let y = 0; y < this.height; y++) {
-        let foundCells = currentGenerationNew.find((cell: Cell) =>
-          cell.hasPosition(new Coordinates(x, y)),
-        );
-        cellState[x][y] = foundCells ? foundCells.getCellState() : 0;
-      }
-    }
-    return cellState;
+  private findCellAt(coordinates: Coordinates) {
+    return this.gridNew.find((cell: Cell) => cell.hasPosition(coordinates));
   }
 
   private countAliveNeighbors(neighborsPositions: number[][]) {
@@ -162,7 +127,7 @@ describe("GridShould", () => {
       const expected = [new Cell(coordinates)];
       const grid = new Grid(1, 1);
 
-      const actual = grid.currentGenerationNew();
+      const actual = grid.currentGeneration();
 
       expect(actual).toEqual(expected);
     });
@@ -182,7 +147,7 @@ describe("GridShould", () => {
 
       const grid = new Grid(3, 3);
 
-      const actual = grid.currentGenerationNew();
+      const actual = grid.currentGeneration();
 
       expect(actual).toEqual(expected);
     });
@@ -193,20 +158,41 @@ describe("GridShould", () => {
       const grid = new Grid(3, 1);
       const coordinates = new Coordinates(0, 1);
       const cell = new Cell(coordinates);
+      cell.live(CellState.ALIVE);
 
-      grid.addLivingCell(coordinates, CellState.ALIVE, cell);
+      const expected = [
+        new Cell(new Coordinates(0, 0)),
+        cell,
+        new Cell(new Coordinates(0, 2)),
+      ];
+      grid.addLivingCell(coordinates, CellState.ALIVE);
 
-      expect(cell.getCellState()).toEqual(CellState.ALIVE);
+      const actual = grid.currentGeneration();
+      expect(actual).toEqual(expected);
     });
 
     it("add a living cell at coordinate 1:1", () => {
+      const cell = new Cell(new Coordinates(2, 1));
+      cell.live(CellState.ALIVE);
+      const expected = [
+        new Cell(new Coordinates(0, 0)),
+        new Cell(new Coordinates(1, 0)),
+        new Cell(new Coordinates(2, 0)),
+        new Cell(new Coordinates(0, 1)),
+        new Cell(new Coordinates(1, 1)),
+        cell,
+        new Cell(new Coordinates(0, 2)),
+        new Cell(new Coordinates(1, 2)),
+        new Cell(new Coordinates(2, 2)),
+      ];
+
       const grid = new Grid(3, 3);
-      const coordinates = new Coordinates(1, 1);
-      const cell = new Cell(coordinates);
+      const coordinates = new Coordinates(2, 1);
 
-      grid.addLivingCell(coordinates, CellState.ALIVE, cell);
+      grid.addLivingCell(coordinates, CellState.ALIVE);
 
-      expect(cell.getCellState()).toEqual(CellState.ALIVE);
+      const actual = grid.currentGeneration();
+      expect(actual).toEqual(expected);
     });
 
     it("add multiple living cells at coordinates 1:1 and 1:2", () => {
@@ -215,48 +201,27 @@ describe("GridShould", () => {
       const neighborCoordinates = new Coordinates(1, 2);
       const cell = new Cell(coordinates);
       const neighbor = new Cell(neighborCoordinates);
+      cell.live(CellState.ALIVE);
+      neighbor.live(CellState.ALIVE);
 
-      grid.addLivingCell(coordinates, CellState.ALIVE, cell);
-      grid.addLivingCell(neighborCoordinates, CellState.ALIVE, neighbor);
+      const expected = [
+        new Cell(new Coordinates(0, 0)),
+        new Cell(new Coordinates(1, 0)),
+        new Cell(new Coordinates(2, 0)),
+        new Cell(new Coordinates(0, 1)),
+        cell,
+        new Cell(new Coordinates(2, 1)),
+        new Cell(new Coordinates(0, 2)),
+        neighbor,
+        new Cell(new Coordinates(2, 2)),
+      ];
 
-      expect(cell.getCellState()).toEqual(CellState.ALIVE);
-      expect(neighbor.getCellState()).toEqual(CellState.ALIVE);
+      grid.addLivingCell(coordinates, CellState.ALIVE);
+      grid.addLivingCell(neighborCoordinates, CellState.ALIVE);
+
+      const actual = grid.currentGeneration();
+      expect(actual).toEqual(expected);
     });
-  });
-
-  it("cause live cell to die when has no living neighbors", () => {
-    const expected = [
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-    ];
-    const grid = new Grid(3, 3);
-    const coordinates = new Coordinates(1, 1);
-
-    grid.addLivingCell(coordinates, CellState.ALIVE);
-
-    grid.nextGeneration();
-
-    const actual = grid.currentGeneration();
-    expect(actual).toEqual(expected);
-  });
-
-  it("cause live cell to die when has only one living neighbor", () => {
-    const expected = [
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-      [CellState.DEAD, CellState.DEAD, CellState.DEAD],
-    ];
-    const grid = new Grid(3, 2);
-    const mainCell = new Coordinates(1, 1);
-    const livingNeighbor = new Coordinates(1, 2);
-
-    grid.addLivingCell(mainCell, CellState.ALIVE);
-    grid.addLivingCell(livingNeighbor, CellState.ALIVE);
-
-    grid.nextGeneration();
-
-    const actual = grid.currentGeneration();
-    expect(actual).toEqual(expected);
   });
 
   it("count one living neighbors", () => {
