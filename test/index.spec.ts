@@ -93,18 +93,23 @@ class Grid {
     ) {
       let y = neighborsPositions[neighborsPositionIndex][0];
       let x = neighborsPositions[neighborsPositionIndex][1];
-      if (this.isAlive(new Coordinates(x, y)) && this.isOnTheGrid(x, y)) {
+      if (
+        this.isAlive(new Coordinates(x, y)) &&
+        this.isOnTheGrid(new Coordinates(x, y))
+      ) {
         livingCellsCount++;
       }
     }
     return livingCellsCount;
   }
 
-  // Data Clump
-  // Primitive Obsession
-  // Use Coordinates instead
-  private isOnTheGrid(x: number, y: number) {
-    return y >= 0 && y < this.height && x >= 0 && x < this.width;
+  private isOnTheGrid(coordinates: Coordinates) {
+    return (
+      coordinates.y >= 0 &&
+      coordinates.y < this.height &&
+      coordinates.x >= 0 &&
+      coordinates.x < this.width
+    );
   }
 
   private isAlive(coordinates: Coordinates) {
